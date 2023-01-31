@@ -11,7 +11,11 @@ import {
   Settings as SidebarSettings,
   UserSettingsSignInAvatar,
 } from '@backstage/plugin-user-settings';
-import { SearchModal, SidebarSearchModal } from '@backstage/plugin-search';
+import {
+  SearchModal,
+  SidebarSearchModal,
+  useSearchModal,
+} from '@backstage/plugin-search';
 import {
   Sidebar,
   sidebarConfig,
@@ -55,14 +59,17 @@ const SidebarLogo = () => {
   );
 };
 
+const MyModal = () => {
+  const { state, toggleModal } = useSearchModal();
+  return <SearchModal {...state} toggleModal={toggleModal} />;
+};
+
 export const Root = ({ children }: PropsWithChildren<{}>) => (
   <SidebarPage>
     <Sidebar>
       <SidebarLogo />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <SidebarSearchModal>
-          {({ toggleModal }) => <SearchModal toggleModal={toggleModal} />}
-        </SidebarSearchModal>
+        <SidebarSearchModal>{() => <MyModal />}</SidebarSearchModal>
       </SidebarGroup>
       <SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
